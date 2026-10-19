@@ -11,7 +11,7 @@ export const profile = {
   chinese: '金卫天',
   pinyin: 'Jīn Wèitiān',
   role: 'Software Engineering · Nanjing Xiaozhuang University',
-  headline: 'President of HIMAFORKA UAJY · Teaching Assistant at Atma Jaya Yogyakarta University',
+  headline: 'President of HIMAFORKA 2025–2026 · Teaching Assistant in C',
   tagline: 'From Tasikmalaya to Nanjing — building software, studying how minds work.',
   bioLine: 'Servant of the King', // your own Instagram bio
   email: 'alexanderkimf@gmail.com',
@@ -25,18 +25,25 @@ export const profile = {
 
 // From your 2+2 application essay (Nanjing Xiaozhuang University, 2026).
 export const quote = {
-  text: 'Nanjing Xiaozhuang University is that bigger tank. I do not seek comfort, I seek growth.',
-  source: 'From my 2 + 2 application essay',
+  text: 'Humans grow as much as their environment allows. Growth stops when comfort begins.',
+  source: 'From my self-introduction, Nanjing Xiaozhuang University, October 2026',
 };
 
 export const about = [
-  'I grew up in Tasikmalaya, West Java. My grandfather came from Korea; he met my grandmother in Bangka Belitung, and the family put down roots in West Java. As a child I was fascinated by physics and electrical systems — how machines work, how a calculator adds, how a switch turns on a light.',
+  'I was born in Tangerang and grew up in Tasikmalaya, West Java. My grandfather came from Korea; he met my grandmother in Bangka Belitung, and the family put down roots in West Java. As a child I was fascinated by physics and electrical systems — how machines work, how a calculator adds, how a switch turns on a light.',
   'The first thing I ever led was a room of thirteen-year-olds: chair of the student council and leader of the scout troop in junior high school. Yogyakarta is where that instinct found a discipline. I studied Informatics at Universitas Atma Jaya Yogyakarta, finishing with a GPA of 3.92 across 86 credit hours, and in October 2025 I was elected President of HIMAFORKA, the Informatics Students\u2019 Association — leading its organisational transformation, its partnerships, and the programmes it runs for students. In 2026 I taught as well: a teaching assistant for the first programming course, in C, from the opening lecture to the last.',
   'In September 2026 the road continued in China: a 2+2 double degree in Software Engineering at Nanjing Xiaozhuang University, with my tuition covered by the NXZU Scholarship Program for International Students.',
   'Music and production run along the same line for me. I am a Christian, and from 2020 to 2024 I was the technical and production director at my church in Tasikmalaya — live sound on digital consoles, LED walls, camera systems and streaming — while learning piano, guitar, drums and bass along the way. In Nanjing I have no instruments with me, so I beatbox instead.',
+  'What music and code share, for me, is the point I care about: many systems running at once, and none of them allowed to fail.',
 ];
 
 export const education = [
+  {
+    school: 'SMAK BPK PENABUR Tasikmalaya',
+    where: 'Tasikmalaya, Indonesia',
+    detail: 'Science track · graduated 2024',
+    years: 'until 2024',
+  },
   {
     school: 'Universitas Atma Jaya Yogyakarta',
     where: 'Yogyakarta, Indonesia',
@@ -55,7 +62,7 @@ export const roles = [
   {
     title: 'President — HIMAFORKA UAJY',
     body: 'Led the Informatics Students\u2019 Association: organisational transformation and governance, sponsorships and partnerships with university stakeholders, mentoring student leaders, and academic, outreach and student-development programmes.',
-    when: 'Oct 2025 – now',
+    when: 'Oct 2025 – Jul 2026',
     link: 'https://www.instagram.com/himaforka.uajy/',
     linkLabel: '@himaforka.uajy',
   },
