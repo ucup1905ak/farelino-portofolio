@@ -2,7 +2,6 @@
 // Sections are plain HTML; this file fills them from data.js and drives both
 // the WebGL layers behind the page and the per-section 2D→3D tilt (--p).
 
-import * as THREE from './assets/three.module.js';
 import { profile, quote, about, education, roles, focus, now, languages, stack, projects } from './data.js';
 
 const $ = (id) => document.getElementById(id);
@@ -78,9 +77,9 @@ const canvas = $('depth');
 
 // Aurora: seven drifting curtains of light in fog, plus slow motes.
 // Curtains are cheap plane meshes with a horizontal gradient texture, additive-blended.
-function startDepth() {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+function startDepth(THREE) {
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.setSize(innerWidth, innerHeight, false);
 
   const scene = new THREE.Scene();
@@ -109,9 +108,9 @@ function startDepth() {
     ['rgba(232,245,240,0.45)', 'rgba(111,220,191,0.2)'],
   ];
 
-  // 12 curtains so the field never runs out: the camera flies to z ≈ -76 at the page end
+  // 8 curtains, spaced wide enough that the field never runs out (camera flies to z ≈ -76)
   const curtains = [];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 8; i++) {
     const geo = new THREE.PlaneGeometry(34 + i * 6, 26 + i * 4);
     const mat = new THREE.MeshBasicMaterial({
       map: curtain(...palette[i % palette.length]),
@@ -121,14 +120,14 @@ function startDepth() {
       blending: THREE.AdditiveBlending,
     });
     const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set((i % 2 ? 1 : -1) * (2 + i * 1.1), -2 + (i % 3) * 1.6, -8 - i * 9);
+    mesh.position.set((i % 2 ? 1 : -1) * (2 + i * 1.4), -2 + (i % 3) * 1.6, -8 - i * 14);
     mesh.rotation.z = (i % 2 ? -1 : 1) * (0.1 + i * 0.02);
     scene.add(mesh);
     curtains.push(mesh);
   }
 
   // slow motes so the field breathes even without scrolling
-  const count = 900;
+  const count = 500;
   const pos = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
     pos[i * 3] = (Math.random() - 0.5) * 70;
@@ -189,10 +188,12 @@ function startDepth() {
   frame();
 }
 
-try {
-  startDepth();
-} catch (err) {
-  // no WebGL (old browser, blocked, headless without GPU): the site stays readable.
-  document.body.classList.add('no3d');
-  console.warn('depth field off:', err);
-}
+// The depth field is optional: load three after the text is on screen, so the page
+// paints in ~10 KB instead of waiting on 800 KB of WebGL.
+import('./assets/three.module.min.js')
+  .then((THREE) => startDepth(THREE))
+  .catch((err) => {
+    // no WebGL, blocked network, old browser: the site stays readable either way.
+    document.body.classList.add('no3d');
+    console.warn('depth field off:', err);
+  });
