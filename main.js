@@ -32,7 +32,7 @@ $('role-list').innerHTML = roles.map((r) => `<li><strong>${r.title}</strong><spa
 $('focus-list').innerHTML = focus.map((f) => `<li><strong>${f.title}</strong><span>${f.body}</span></li>`).join('');
 $('now-list').innerHTML = now.map((n) => `<li>${n}</li>`).join('');
 $('project-list').innerHTML = projects.map((p) => `<li><strong>${p.title}</strong><span>${p.body}${
-  p.href ? ` <a href="${p.href}">link</a>` : ''}</span></li>`).join('');
+  p.href ? ` <a class="ext" href="${p.href}" target="_blank" rel="noopener">open</a>` : ''}</span></li>`).join('');
 $('foot-name').textContent = `${profile.name} · ${profile.chinese}`;
 $('year').textContent = new Date().getFullYear();
 
