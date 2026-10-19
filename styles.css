@@ -3,12 +3,18 @@
    (main.js) and the per-section tilt below, driven by --p (0 = flat, 1 = full tilt). */
 
 :root {
-  --bg: #0a0c11;
-  --ink: #eef1f6;
-  --muted: #9aa4b4;
-  --gold: #d8ad5c;
-  --line: rgba(238, 241, 246, 0.14);
-  --card: rgba(18, 22, 31, 0.62);
+  --bg: #07110f;
+  --ink: #e8f5f0;
+  --muted: #8fa8a2;
+  --gold: #6fdcbf;
+  --line: rgba(232, 245, 240, 0.14);
+  --card: rgba(11, 26, 24, 0.6);
+  --bar: rgba(7, 17, 15, 0.8);
+  --frame: #0c1a17;
+  --fade1: rgba(7, 17, 15, 0.22);
+  --fade2: rgba(7, 17, 15, 0.8);
+  --chip: rgba(232, 245, 240, 0.03);
+  --sheet: rgba(4, 12, 10, 0.5);
   --maxw: 62rem;
 }
 
@@ -40,9 +46,9 @@ body {
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 20% 0%, rgba(216, 173, 92, 0.10), transparent 60%),
-    radial-gradient(90% 70% at 90% 100%, rgba(90, 150, 190, 0.12), transparent 60%),
-    linear-gradient(180deg, rgba(10, 12, 17, 0.30), rgba(10, 12, 17, 0.68));
+    radial-gradient(120% 80% at 15% 0%, rgba(111, 220, 191, 0.12), transparent 60%),
+    radial-gradient(90% 70% at 90% 100%, rgba(60, 120, 190, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(7, 17, 15, 0.28), rgba(7, 17, 15, 0.72));
 }
 
 /* ---------- top bar ---------- */
@@ -59,7 +65,7 @@ body {
   gap: 1rem;
   padding: 0.85rem clamp(1rem, 4vw, 2.5rem);
   backdrop-filter: blur(8px);
-  background: linear-gradient(180deg, rgba(10, 12, 17, 0.8), rgba(10, 12, 17, 0));
+  background: linear-gradient(180deg, var(--bar), transparent);
   font-size: 0.86rem;
 }
 
@@ -122,7 +128,7 @@ main { position: relative; z-index: 2; }
   z-index: -1;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(10, 12, 17, 0.5);
+  background: var(--sheet);
   transform: translate3d(calc(var(--p, 0) * 22px), calc(var(--p, 0) * 18px), -60px);
   opacity: calc(var(--p, 0) * 0.85);
 }
@@ -184,7 +190,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
-  background: #0f1218;
+  background: var(--frame);
   box-shadow: 0 26px 50px -28px rgba(0, 0, 0, 0.95);
   /* the photo is its own layer: it floats ahead of the card in the 3D stack */
   transform: translateZ(70px) rotateY(calc(var(--dx, 0) * -4deg));
@@ -199,7 +205,7 @@ h2 {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 12, 17, 0.22) 0%, rgba(10, 12, 17, 0) 30%, rgba(10, 12, 17, 0.78) 100%);
+  background: linear-gradient(180deg, var(--fade1) 0%, transparent 30%, var(--fade2) 100%);
 }
 
 .portrait figcaption {
@@ -229,7 +235,7 @@ h2 {
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #0f1218;
+  background: var(--frame);
   box-shadow: 0 26px 50px -28px rgba(0, 0, 0, 0.95);
   transform: translateZ(45px) rotateY(calc(var(--dx, 0) * 3deg));
 }
@@ -255,7 +261,7 @@ h2 {
   color: var(--muted);
 }
 
-a.ext { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(216, 173, 92, 0.45); }
+a.ext { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); }
 a.ext:hover, a.ext:focus-visible { border-color: var(--gold); }
 
 .mini {
@@ -307,7 +313,7 @@ a.ext:hover, a.ext:focus-visible { border-color: var(--gold); }
   border: 1px solid var(--line);
   border-left: 2px solid var(--gold);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--chip);
 }
 
 .timeline .school { font-weight: 600; }

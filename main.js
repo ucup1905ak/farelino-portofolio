@@ -76,68 +76,71 @@ layout();
 
 const canvas = $('depth');
 
+// Aurora: seven drifting curtains of light in fog, plus slow motes.
+// Curtains are cheap plane meshes with a horizontal gradient texture, additive-blended.
 function startDepth() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(innerWidth, innerHeight, false);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x0a0c11, 18, 70);
+  scene.fog = new THREE.Fog(0x07110f, 22, 110);
 
-  const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 200);
-  camera.position.set(0, 0, 6);
+  const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 400);
+  camera.position.set(0, 0, 8);
 
-  // soft gradient bands = the "layers" you fly through
-  const band = (top, bottom) => {
+  const curtain = (a, b) => {
     const c = document.createElement('canvas');
-    c.width = 8; c.height = 256;
+    c.width = 512; c.height = 4;
     const g = c.getContext('2d');
-    const grd = g.createLinearGradient(0, 0, 0, 256);
-    grd.addColorStop(0, top);
-    grd.addColorStop(0.55, bottom);
-    grd.addColorStop(1, 'rgba(10,12,17,0)');
+    const grd = g.createLinearGradient(0, 0, 512, 0);
+    grd.addColorStop(0, 'rgba(0,0,0,0)');
+    grd.addColorStop(0.45, a);
+    grd.addColorStop(0.62, b);
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = grd;
-    g.fillRect(0, 0, 8, 256);
+    g.fillRect(0, 0, 512, 4);
     return new THREE.CanvasTexture(c);
   };
 
   const palette = [
-    ['rgba(216,173,92,0.55)', 'rgba(216,173,92,0.06)'],
-    ['rgba(90,150,190,0.5)', 'rgba(90,150,190,0.05)'],
-    ['rgba(238,241,246,0.22)', 'rgba(238,241,246,0.02)'],
+    ['rgba(111,220,191,0.85)', 'rgba(60,150,210,0.5)'],
+    ['rgba(120,200,255,0.7)', 'rgba(111,220,191,0.45)'],
+    ['rgba(232,245,240,0.45)', 'rgba(111,220,191,0.2)'],
   ];
 
-  const layers = [];
-  for (let i = 0; i < 7; i++) {
-    const far = i * 9;
-    const geo = new THREE.PlaneGeometry(30 + far * 1.6, 18 + far * 1.1);
+  // 12 curtains so the field never runs out: the camera flies to z ≈ -76 at the page end
+  const curtains = [];
+  for (let i = 0; i < 12; i++) {
+    const geo = new THREE.PlaneGeometry(34 + i * 6, 26 + i * 4);
     const mat = new THREE.MeshBasicMaterial({
-      map: band(...palette[i % palette.length]),
+      map: curtain(...palette[i % palette.length]),
       transparent: true,
-      opacity: 0.62 - i * 0.05,
+      opacity: Math.max(0.1, 0.5 - i * 0.045),
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
     const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set((i % 2 ? 1 : -1) * (1.2 + i * 0.5), (i % 3 - 1) * 1.4, -6 - far);
-    mesh.rotation.z = (i % 2 ? -1 : 1) * 0.06 * i;
+    mesh.position.set((i % 2 ? 1 : -1) * (2 + i * 1.1), -2 + (i % 3) * 1.6, -8 - i * 9);
+    mesh.rotation.z = (i % 2 ? -1 : 1) * (0.1 + i * 0.02);
     scene.add(mesh);
-    layers.push(mesh);
+    curtains.push(mesh);
   }
 
-  // slow dust so the field breathes even without scrolling
-  const count = 1200;
+  // slow motes so the field breathes even without scrolling
+  const count = 900;
   const pos = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
     pos[i * 3] = (Math.random() - 0.5) * 70;
-    pos[i * 3 + 1] = (Math.random() - 0.5) * 42;
+    pos[i * 3 + 1] = (Math.random() - 0.5) * 46;
     pos[i * 3 + 2] = -Math.random() * 90;
   }
-  const dustGeo = new THREE.BufferGeometry();
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
-    color: 0x9aa4b4, size: 0.07, transparent: true, opacity: 0.7, depthWrite: false,
+  const motesGeo = new THREE.BufferGeometry();
+  motesGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const motes = new THREE.Points(motesGeo, new THREE.PointsMaterial({
+    color: 0xa8f0d8, size: 0.075, transparent: true, opacity: 0.55, depthWrite: false,
   }));
-  scene.add(dust);
+  scene.add(motes);
 
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   addEventListener('pointermove', (e) => {
@@ -164,20 +167,20 @@ function startDepth() {
     const t = clock.getElapsed() * speed;
     const p = progress();
 
-    camera.position.z = 6 - p * 78;
+    camera.position.z = 8 - p * 84;
     pointer.x += (pointer.tx - pointer.x) * 0.05;
     pointer.y += (pointer.ty - pointer.y) * 0.05;
-    camera.position.x = pointer.x * 2.2;
+    camera.position.x = pointer.x * 2.4;
     camera.position.y = -pointer.y * 1.4;
     camera.rotation.y = -pointer.x * 0.05;
-    camera.rotation.x = pointer.y * 0.03;
 
-    layers.forEach((m, i) => {
-      m.rotation.z += 0.0006 * (i % 2 ? 1 : -1) * speed;
-      m.position.y += Math.sin(t * 0.32 + i) * 0.0022 * speed;
+    curtains.forEach((m, i) => {
+      m.rotation.z += (i % 2 ? 1 : -1) * 0.0004 * speed;
+      m.position.y += Math.sin(t * 0.28 + i * 1.3) * 0.0025 * speed;
+      m.position.x += Math.cos(t * 0.2 + i) * 0.0015 * speed;
     });
-    dust.rotation.z = t * 0.012;
-    dust.position.y = Math.sin(t * 0.16) * 0.6;
+    motes.rotation.z = t * 0.01;
+    motes.position.y = Math.sin(t * 0.14) * 0.8;
 
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
