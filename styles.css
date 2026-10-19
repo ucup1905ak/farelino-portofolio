@@ -1,0 +1,367 @@
+/* Farelino Alexander Kim — layered 2D/3D portfolio
+   The 3D feel comes from two places: the WebGL depth field behind everything
+   (main.js) and the per-section tilt below, driven by --p (0 = flat, 1 = full tilt). */
+
+:root {
+  --bg: #0a0c11;
+  --ink: #eef1f6;
+  --muted: #9aa4b4;
+  --gold: #d8ad5c;
+  --line: rgba(238, 241, 246, 0.14);
+  --card: rgba(18, 22, 31, 0.62);
+  --maxw: 62rem;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#depth {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+#veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(216, 173, 92, 0.10), transparent 60%),
+    radial-gradient(90% 70% at 90% 100%, rgba(90, 150, 190, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(10, 12, 17, 0.30), rgba(10, 12, 17, 0.68));
+}
+
+/* ---------- top bar ---------- */
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 4vw, 2.5rem);
+  backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(10, 12, 17, 0.8), rgba(10, 12, 17, 0));
+  font-size: 0.86rem;
+}
+
+.bar-name { letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+.bar-nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+
+.bar-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.bar-nav a:hover, .bar-nav a:focus-visible { color: var(--ink); border-color: var(--gold); }
+
+/* ---------- the layers ---------- */
+
+main { position: relative; z-index: 2; }
+
+.panel {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(4.5rem, 12vh, 8rem) clamp(1.1rem, 5vw, 3rem);
+  perspective: 1400px;
+}
+
+.hero { min-height: 100svh; }
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 30px 60px -30px rgba(0, 0, 0, 0.9);
+  transform-style: preserve-3d;
+  /* the 2D → 3D move: flat at the edges of the viewport, tilted at the centre */
+  transform:
+    rotateX(calc(var(--p, 0) * -7deg))
+    rotateY(calc(var(--p, 0) * var(--dx, 0) * 6deg))
+    translateZ(calc(var(--p, 0) * 40px))
+    translateY(calc((1 - var(--p, 0)) * 32px));
+  opacity: calc(0.35 + var(--p, 0) * 0.65);
+  transition: transform 0.12s linear, opacity 0.3s ease;
+}
+
+/* a second sheet behind the card, so each block reads as a stack of layers */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(10, 12, 17, 0.5);
+  transform: translate3d(calc(var(--p, 0) * 22px), calc(var(--p, 0) * 18px), -60px);
+  opacity: calc(var(--p, 0) * 0.85);
+}
+
+/* ---------- type ---------- */
+
+.kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.headline { margin: 0 0 1rem; font-size: 0.92rem; color: var(--muted); }
+
+h1 {
+  margin: 0 0 0.8rem;
+  font-size: clamp(2.1rem, 6.4vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+
+h1 .cn {
+  display: block;
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  color: var(--gold);
+  margin-top: 0.7rem;
+}
+
+h2 {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  letter-spacing: -0.01em;
+}
+
+.lede { margin: 0 0 1.4rem; font-size: clamp(1rem, 2.2vw, 1.2rem); color: var(--ink); max-width: 46ch; }
+
+.body p { margin: 0 0 1rem; color: var(--muted); max-width: 62ch; }
+.body p:last-child { margin-bottom: 0; }
+
+.scroll-hint { margin: 2rem 0 0; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* ---------- hero: text + portrait ---------- */
+
+.hero-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3.5vw, 2.6rem);
+  align-items: center;
+}
+
+.portrait {
+  margin: 0;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f1218;
+  box-shadow: 0 26px 50px -28px rgba(0, 0, 0, 0.95);
+  /* the photo is its own layer: it floats ahead of the card in the 3D stack */
+  transform: translateZ(70px) rotateY(calc(var(--dx, 0) * -4deg));
+  transform-style: preserve-3d;
+}
+
+.portrait img { display: block; width: 100%; height: auto; filter: contrast(1.04) saturate(0.94); }
+
+/* fade the photo's lower edge into the page, and give the caption something to sit on */
+.portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(10, 12, 17, 0.22) 0%, rgba(10, 12, 17, 0) 30%, rgba(10, 12, 17, 0.78) 100%);
+}
+
+.portrait figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 0.9rem 1rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ---------- about: text + a second, smaller photo + quote ---------- */
+
+.about-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  align-items: start;
+}
+
+.about-photo {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #0f1218;
+  box-shadow: 0 26px 50px -28px rgba(0, 0, 0, 0.95);
+  transform: translateZ(45px) rotateY(calc(var(--dx, 0) * 3deg));
+}
+
+.about-photo img { display: block; width: 100%; height: auto; }
+
+.quote {
+  grid-column: 1 / -1;
+  margin: 1.4rem 0 0;
+  padding: 0.1rem 0 0.1rem 1.1rem;
+  border-left: 2px solid var(--gold);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.quote cite {
+  display: block;
+  margin-top: 0.6rem;
+  font-style: normal;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+a.ext { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(216, 173, 92, 0.45); }
+a.ext:hover, a.ext:focus-visible { border-color: var(--gold); }
+
+.mini {
+  margin: 1.5rem 0 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.focus-list em { font-style: normal; color: var(--gold); font-size: 0.82rem; white-space: nowrap; }
+
+@media (max-width: 860px) {
+  .hero-card { grid-template-columns: 1fr; }
+  .portrait { max-width: 17rem; order: -1; }
+  .portrait { transform: none; }
+  .about-card { grid-template-columns: 1fr; }
+  .about-photo { max-width: 16rem; }
+}
+
+/* ---------- lists ---------- */
+
+.links, .tags, .plain, .focus-list, .timeline { list-style: none; margin: 0; padding: 0; }
+
+.links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+.links a {
+  display: inline-block;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.links a:hover, .links a:focus-visible { border-color: var(--gold); color: var(--gold); }
+
+.links .pending { color: var(--muted); border-style: dashed; font-size: 0.8rem; }
+
+.timeline { display: grid; gap: 1.1rem; margin-bottom: 1.6rem; }
+
+.timeline li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--gold);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.timeline .school { font-weight: 600; }
+.timeline .where { grid-column: 1; color: var(--muted); font-size: 0.88rem; }
+.timeline .detail { grid-column: 1 / -1; color: var(--muted); font-size: 0.92rem; }
+.timeline .years { grid-row: 1; grid-column: 2; color: var(--gold); font-size: 0.8rem; white-space: nowrap; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.tags li {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.focus-list { display: grid; gap: 1.1rem; margin-top: 1.4rem; }
+
+.focus-list li { padding-left: 1.1rem; border-left: 2px solid var(--line); }
+.focus-list strong { display: block; margin-bottom: 0.25rem; }
+.focus-list span { color: var(--muted); }
+
+.plain { display: grid; gap: 0.7rem; margin-bottom: 1.4rem; }
+.plain li { color: var(--muted); max-width: 60ch; }
+
+/* ---------- footer ---------- */
+
+.foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem clamp(1.1rem, 5vw, 3rem) 3rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- behaviour ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .card { transform: none !important; opacity: 1; transition: none; }
+  .card::before { display: none; }
+}
+
+@media (max-width: 640px) {
+  .timeline li { grid-template-columns: 1fr; }
+  .timeline .years { grid-row: auto; grid-column: 1; }
+  .bar-nav { display: none; }
+}
+
+body.no3d #depth { display: none; }
+body.no3d .card { transform: none; opacity: 1; }
+body.no3d .card::before { display: none; }

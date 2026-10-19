@@ -1,18 +1,117 @@
-<!doctype html>
-<html lang="en">  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#4285f4" />
-    <!-- Google Fonts for Google Drive-like appearance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Roboto+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <title>YAP Drive - Google Drive Clone</title>
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Farelino Alexander Kim</title>
+<meta name="description" content="Portfolio of Farelino Alexander Kim — Informatics student, Indonesia and China. Building toward an AI that can feel.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/react-app/main.tsx"></script>
-  </body>
+<canvas id="depth" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="bar-name" id="bar-name"></span>
+  <nav class="bar-nav">
+    <a href="#about">About</a>
+    <a href="#study">Study</a>
+    <a href="#roles">Roles</a>
+    <a href="#focus">Focus</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="panel hero" id="top">
+    <div class="card hero-card">
+      <div class="hero-text">
+        <p class="kicker" id="hero-kicker"></p>
+        <p class="headline" id="hero-headline"></p>
+        <h1>
+          <span id="hero-name"></span>
+          <span class="cn" id="hero-cn"></span>
+        </h1>
+        <p class="lede" id="hero-tagline"></p>
+        <ul class="links" id="hero-links"></ul>
+        <p class="scroll-hint">scroll ↓</p>
+      </div>
+      <figure class="portrait">
+        <img src="assets/portrait.jpg" alt="Farelino Alexander Kim in his faculty work shirt" width="1100" height="1466">
+        <figcaption id="hero-caption"></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="panel" id="about">
+    <div class="card about-card">
+      <div class="about-text">
+        <p class="kicker">01 — About</p>
+        <h2>Where I come from</h2>
+        <div class="body" id="about-body"></div>
+      </div>
+      <figure class="about-photo">
+        <img src="assets/about.jpg" alt="Farelino Alexander Kim in his university jacket" width="720" height="900">
+      </figure>
+      <blockquote class="quote" id="quote"></blockquote>
+    </div>
+  </section>
+
+  <section class="panel" id="study">
+    <div class="card">
+      <p class="kicker">02 — Study</p>
+      <h2>Two countries, one degree</h2>
+      <ul class="timeline" id="study-list"></ul>
+      <p class="mini">Languages</p>
+      <ul class="tags" id="lang-list"></ul>
+      <p class="mini">Tools</p>
+      <ul class="tags" id="stack-list"></ul>
+    </div>
+  </section>
+
+  <section class="panel" id="roles">
+    <div class="card">
+      <p class="kicker">03 — Roles</p>
+      <h2>What I have led and taught</h2>
+      <ul class="focus-list" id="role-list"></ul>
+    </div>
+  </section>
+
+  <section class="panel" id="focus">
+    <div class="card">
+      <p class="kicker">04 — Focus</p>
+      <h2>What I think about</h2>
+      <ul class="focus-list" id="focus-list"></ul>
+    </div>
+  </section>
+
+  <section class="panel" id="now">
+    <div class="card">
+      <p class="kicker">05 — Now</p>
+      <h2>This season</h2>
+      <ul class="plain" id="now-list"></ul>
+      <ul class="focus-list" id="project-list"></ul>
+    </div>
+  </section>
+
+  <section class="panel" id="contact">
+    <div class="card">
+      <p class="kicker">06 — Contact</p>
+      <h2>Say hello</h2>
+      <p class="lede">The fastest way to reach me is email.</p>
+      <ul class="links" id="contact-links"></ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span id="foot-name"></span>
+  <span>© <span id="year"></span></span>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
 </html>
