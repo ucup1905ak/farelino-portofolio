@@ -3,18 +3,18 @@
    (main.js) and the per-section tilt below, driven by --p (0 = flat, 1 = full tilt). */
 
 :root {
-  --bg: #05182b;
-  --ink: #e6f2fb;
-  --muted: #8fa8c0;
-  --gold: #4fc3e8;
-  --line: rgba(230, 242, 251, 0.14);
-  --card: rgba(7, 28, 48, 0.78);
-  --bar: rgba(5, 24, 43, 0.92);
-  --frame: #0a2740;
-  --fade1: rgba(5, 24, 43, 0.22);
-  --fade2: rgba(5, 24, 43, 0.8);
-  --chip: rgba(230, 242, 251, 0.03);
-  --sheet: rgba(3, 16, 30, 0.5);
+  --bg: #061a0f;
+  --ink: #e6f7ec;
+  --muted: #8fb3a0;
+  --gold: #5fe08a;
+  --line: rgba(230, 247, 236, 0.14);
+  --card: rgba(8, 34, 20, 0.78);
+  --bar: rgba(6, 26, 15, 0.92);
+  --frame: #0c3520;
+  --fade1: rgba(6, 26, 15, 0.22);
+  --fade2: rgba(6, 26, 15, 0.8);
+  --chip: rgba(230, 247, 236, 0.03);
+  --sheet: rgba(4, 16, 9, 0.5);
   --maxw: 62rem;
 }
 
@@ -46,9 +46,9 @@ body {
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 15% 0%, rgba(79, 195, 232, 0.12), transparent 60%),
-    radial-gradient(90% 70% at 90% 100%, rgba(40, 110, 200, 0.16), transparent 60%),
-    linear-gradient(180deg, rgba(5, 24, 43, 0.28), rgba(5, 24, 43, 0.72));
+    radial-gradient(120% 80% at 15% 0%, rgba(95, 224, 138, 0.12), transparent 60%),
+    radial-gradient(90% 70% at 90% 100%, rgba(40, 160, 95, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(6, 26, 15, 0.28), rgba(6, 26, 15, 0.72));
 }
 
 /* ---------- top bar ---------- */

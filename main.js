@@ -103,9 +103,9 @@ function startDepth(THREE) {
   };
 
   const palette = [
-    ['rgba(79,195,232,0.85)', 'rgba(45,110,200,0.5)'],
-    ['rgba(120,190,255,0.7)', 'rgba(79,195,232,0.45)'],
-    ['rgba(230,242,251,0.45)', 'rgba(79,195,232,0.2)'],
+    ['rgba(95,224,138,0.85)', 'rgba(45,160,95,0.5)'],
+    ['rgba(140,240,175,0.7)', 'rgba(95,224,138,0.45)'],
+    ['rgba(230,247,236,0.45)', 'rgba(95,224,138,0.2)'],
   ];
 
   // 8 curtains, spaced wide enough that the field never runs out (camera flies to z ≈ -76)
@@ -137,7 +137,7 @@ function startDepth(THREE) {
   const motesGeo = new THREE.BufferGeometry();
   motesGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const motes = new THREE.Points(motesGeo, new THREE.PointsMaterial({
-    color: 0x9ad8f5, size: 0.075, transparent: true, opacity: 0.55, depthWrite: false,
+    color: 0x9af5c4, size: 0.075, transparent: true, opacity: 0.55, depthWrite: false,
   }));
   scene.add(motes);
 
